@@ -72,6 +72,4 @@ public class NewsLoaderTest {
         assertThat(publicContent.size(), is(equalTo(1)));
     }
 
-
-
 }
