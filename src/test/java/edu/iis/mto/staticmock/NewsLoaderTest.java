@@ -72,4 +72,14 @@ public class NewsLoaderTest {
         assertThat(publicContent.size(), is(equalTo(1)));
     }
 
+    @Test
+    public void shouldHaveThreeSubInfo() {
+        NewsLoader newsLoader = new NewsLoader();
+        PublishableNews publishableNews = newsLoader.loadNews();
+
+        List<String> subContent = (List<String>) Whitebox.getInternalState(publishableNews, "subscribentContent");
+
+        assertThat(subContent.size(), is(equalTo(3)));
+    }
+
 }
