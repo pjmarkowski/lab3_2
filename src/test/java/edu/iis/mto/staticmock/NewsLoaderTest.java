@@ -15,6 +15,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -27,6 +29,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest({ConfigurationLoader.class, NewsReaderFactory.class})
 public class NewsLoaderTest {
 
+    private NewsReader mockNewsReader;
     private IncomingNews incomingNews = new IncomingNews();
 
     private final IncomingInfo incomingInfo0 = new IncomingInfo("info0",SubsciptionType.A);
@@ -55,7 +58,7 @@ public class NewsLoaderTest {
         incomingNews.add(incomingInfo2);
         incomingNews.add(incomingInfo3);
 
-        NewsReader mockNewsReader = mock(NewsReader.class);
+        mockNewsReader = mock(NewsReader.class);
         when(mockNewsReader.read()).thenReturn(incomingNews);
 
         mockStatic(NewsReaderFactory.class);
@@ -80,6 +83,14 @@ public class NewsLoaderTest {
         List<String> subContent = (List<String>) Whitebox.getInternalState(publishableNews, "subscribentContent");
 
         assertThat(subContent.size(), is(equalTo(3)));
+    }
+
+    @Test
+    public void readMethodShouldBeInvokedOnce() {
+        NewsLoader newsLoader = new NewsLoader();
+        PublishableNews publishableNews = newsLoader.loadNews();
+
+        verify(mockNewsReader, times(1)).read();
     }
 
 }
