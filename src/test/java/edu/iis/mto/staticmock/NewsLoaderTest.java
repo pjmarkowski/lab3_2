@@ -63,8 +63,15 @@ public class NewsLoaderTest {
     }
 
     @Test
-    public void test() {
+    public void shouldHaveOnePublicInfo() {
+        NewsLoader newsLoader = new NewsLoader();
+        PublishableNews publishableNews = newsLoader.loadNews();
+
+        List<String> publicContent = (List<String>) Whitebox.getInternalState(publishableNews, "publicContent");
+
+        assertThat(publicContent.size(), is(equalTo(1)));
     }
+
 
 
 }
