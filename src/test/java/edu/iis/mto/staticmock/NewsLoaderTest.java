@@ -1,5 +1,6 @@
 package edu.iis.mto.staticmock;
 
+import edu.iis.mto.staticmock.reader.NewsReader;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest(ConfigurationLoader.class)
 public class NewsLoaderTest {
 
+    private IncomingNews incomingNews = new IncomingNews();
+
     @Before
     public void setUp() {
         Configuration configuration = new Configuration();
@@ -29,6 +32,9 @@ public class NewsLoaderTest {
         ConfigurationLoader mockConfigurationLoader = mock(ConfigurationLoader.class);
         when(mockConfigurationLoader.getInstance()).thenReturn(mockConfigurationLoader);
         when(mockConfigurationLoader.loadConfiguration()).thenReturn(configuration);
+
+        NewsReader mockedNewsReader = mock(NewsReader.class);
+        when(mockedNewsReader.read()).thenReturn(incomingNews);
     }
 
     @Test
